@@ -4,7 +4,9 @@
 
 ```sh
 uv run pytest --cov=docs_link_check   # tests with coverage report
-uv run python scripts/check.py      # every gate, as CI and the factory run it
+uv run ruff check .                   # lint
+uv run ruff format --check .          # formatting
+uv run mypy                           # types
 ```
 
 ## Policy
@@ -19,10 +21,9 @@ uv run python scripts/check.py      # every gate, as CI and the factory run it
 
 - Local tier (every gate run, coverage measured here): unit and property tests, plus conformance on small
   fixtures kept in the repository.
-- CI tier: conformance that needs an external tool or a download. Mark them `@pytest.mark.conformance`; `scripts/check.py` deselects them locally
-  (unless `FABRICA_CI=1`). The CI `conformance` job sets `FABRICA_CI=1` and runs the full suite. Tools are installed
-  by the optional `ci/conformance-setup.sh` (bash, CI only; verify every download against a pinned SHA-256), and
-  tagged tests skip cleanly when their tool is missing.
+- CI tier: conformance that needs an external tool or a download. Mark them `@pytest.mark.conformance`; they are
+  deselected locally (unless `FABRICA_CI=1`) and run in full when `FABRICA_CI=1` is set. Tagged tests skip cleanly
+  when their tool is missing.
 
 ## Layout
 

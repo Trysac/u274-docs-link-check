@@ -19,6 +19,9 @@ classifiers = [
 ]
 dependencies = []
 
+[project.scripts]
+docs-link-check = "docs_link_check.__main__:main"
+
 [project.urls]
 Homepage = "https://github.com/Trysac/u274-docs-link-check"
 Source = "https://github.com/Trysac/u274-docs-link-check"
