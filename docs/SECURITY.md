@@ -2,14 +2,15 @@
 
 ## Threat model
 
-`trysac-docs-link-check` is a pure library without I/O. The main risks are:
+`trysac-docs-link-check` reads documentation files and, only through a caller-supplied checker,
+the network. The main risks are:
 
-- **Supply chain**: a compromised dependency or CI action. Mitigation: no runtime dependencies,
-  Dependabot weekly updates, actions pinned to major versions, minimal workflow permissions.
+- **Supply chain**: a compromised dependency or tool. Mitigation: no runtime dependencies; the
+  development tools are pinned in `uv.lock` and updated deliberately.
 - **Leaked secrets**: tokens committed by mistake. Mitigation: `gitleaks` runs in the local gates
-  and in CI; `.env` files are git-ignored.
+  where available; `.env` files are git-ignored.
 - **Insecure code**: shell injection, weak hashes, unsafe deserialization. Mitigation: Ruff's
-  `S` rules in lint and a `security` gate (Bandit, high severity fails, `# nosec` ignored); fix the
+  `S` rules in lint and a `security` check (Bandit, high severity fails, `# nosec` ignored); fix the
   code instead of silencing it.
 - **Untrusted input**: callers may pass hostile strings. Mitigation: validate input and fail with
   explicit exceptions; never `eval`, `exec` or deserialize untrusted data.
